@@ -12,30 +12,43 @@ export interface DonorParams {
   amount: number | string
 }
 
-export interface CharityParams {
+export interface EventParams {
   id?: number
   name: string
-  fullname: string
-  profile: string
   amount: number | string
   description: string
   image: string
+  location: string
 }
 
-export interface CharityStruct {
+export interface UserParams {
+  id?: number
+  userName: string
+  email: string
+  phone: string
+}
+
+export interface EventStruct {
   id: number
   image: string
-  fullname: string
   name: string
   profile: string
   description: string
-  timestamp: number
+  location: string
   donations: number
   raised: number
   amount: number
   owner: string
   deleted: boolean
   banned: boolean
+}
+
+export interface UserStruct {
+  id: number
+  owner: string
+  userName: string
+  email: string
+  phone: string
 }
 
 export interface SupportStruct {
@@ -49,14 +62,29 @@ export interface SupportStruct {
 }
 
 export interface GlobalState {
-  charities: CharityStruct[]
-  charity: CharityStruct | null
+  events: EventStruct[]
+  event: EventStruct | null
   supports: SupportStruct[]
   deleteModal: string
   donorsModal: string
   supportModal: string
   banModal: string
   owner: string
+}
+
+export interface Tst {
+  id: number
+  image: string
+  name: string
+  profile: string
+  description: string
+  location: string
+  donations: number
+  raised: number
+  amount: number
+  owner: string
+  deleted: boolean
+  banned: boolean
 }
 
 export interface RootState {

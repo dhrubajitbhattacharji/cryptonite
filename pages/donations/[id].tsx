@@ -3,7 +3,7 @@ import Details from '@/components/Details'
 import Supports from '@/components/Supports'
 import NavBtn from '@/components/NavBtn'
 import Payment from '@/components/Payment'
-import { CharityStruct, RootState, SupportStruct } from '@/utils/type.dt'
+import { EventStruct, RootState, SupportStruct } from '@/utils/type.dt'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -15,22 +15,22 @@ import { useEffect } from 'react'
 import { globalActions } from '@/store/globalSlices'
 
 interface PageProps {
-  charityData: CharityStruct
+  charityData: EventStruct
   supportsData: SupportStruct[]
   owner: string
 }
 
 const Page: NextPage<PageProps> = ({ charityData, supportsData, owner }) => {
   
-  const { charity, supports } = useSelector((states: RootState) => states.globalStates)
+  const { event, supports } = useSelector((states: RootState) => states.globalStates)
   const dispatch = useDispatch()
-  const { setCharity, setSupports, setOwner } = globalActions
+  const { setEvent, setOwner } = globalActions
 
-  useEffect(() => {
-    dispatch(setOwner(owner))
-    dispatch(setCharity(charityData))
-    dispatch(setSupports(supportsData))
-  }, [dispatch, setCharity, charityData, setSupports, supportsData])
+  // useEffect(() => {
+  //   // dispatch(setOwner(owner))
+  //   // dispatch(setEvent(charityData))
+  //   // dispatch(setSupports(supportsData))
+  // }, [dispatch, setEvent, charityData, supportsData])
 
   const router = useRouter()
   const { id } = router.query
@@ -38,7 +38,7 @@ const Page: NextPage<PageProps> = ({ charityData, supportsData, owner }) => {
   return (
     <div>
       <Head>
-        <title>Charity | {charity?.name}</title>
+        <title>Charity | {event?.name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -46,23 +46,23 @@ const Page: NextPage<PageProps> = ({ charityData, supportsData, owner }) => {
       <div className="h-10"></div>
       <div className="h-10"></div>
 
-      {charity && (
+      {event && (
         <div
           className="flex flex-col sm:flex-row sm:justify-between items-start
           lg:w-2/3 w-full mx-auto space-y-4 sm:space-y-0 sm:space-x-10 my-10 px-8 sm:px-0"
         >
-          <Details supports={supports} charity={charity} />
-          <Payment owner={owner} supports={supports.slice(0, 4)} charity={charity} />
+          <Details supports={supports} charity={event} />
+          <Payment owner={owner} supports={supports.slice(0, 4)} charity={event} />
         </div>
       )}
 
-      {charity && (
+      {event && (
         <>
-          <Delete charity={charity} />
-          <Donor charity={charity} />
-          <Ban charity={charity} />
-          <Supports supports={supports} />
-          <NavBtn owner={charity?.owner} donationId={Number(id)} />
+          <Delete charity={event} />
+          <Donor charity={event} />
+          <Ban charity={event} />
+          {/* <Supports supports={supports} /> */}
+          <NavBtn owner={event?.owner} donationId={Number(id)} />
         </>
       )}
     </div>
@@ -75,13 +75,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const { id } = context.query
 
   const owner: string = ''
-  const charityData: CharityStruct = generateCharities(Number(id))[0]
-  const supportsData: SupportStruct[] = generateSupports(7)
+  const charityData: EventStruct = generateCharities(Number(id))[0]
+  // const supportsData: SupportStruct[] = generateSupports(7)
   return {
     props: {
       owner: JSON.parse(JSON.stringify(owner)),
       charityData: JSON.parse(JSON.stringify(charityData)),
-      supportsData: JSON.parse(JSON.stringify(supportsData)),
+      // supportsData: JSON.parse(JSON.stringify(supportsData)),
     },
   }
 }

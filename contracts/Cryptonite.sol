@@ -8,7 +8,7 @@ import '@openzeppelin/contracts/access/AccessControl.sol';
 
 import "hardhat/console.sol";
 
-contract Cryptonite is Ownable, AccessControl {
+contract Cryptonite is AccessControl {
   using Counters for Counters.Counter;
   Counters.Counter private _totalEvents;
   Counters.Counter private _totalUsers;
@@ -187,7 +187,7 @@ contract Cryptonite is Ownable, AccessControl {
     events[id].deleted = true;
   }
 
-  function toggleStatus(uint256 id) public onlyOwner {
+  function toggleStatus(uint256 id) public {
     require(eventExist[id], 'Event Not Found');
     events[id].isLive = !events[id].isLive;
   }

@@ -1,16 +1,18 @@
-import { CharityStruct, GlobalState, SupportStruct } from '@/utils/type.dt'
+import { EventStruct, GlobalState, SupportStruct } from '@/utils/type.dt'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 export const globalActions = {
-  setCharities: (state: GlobalState, action: PayloadAction<CharityStruct[]>) => {
-    state.charities = action.payload
+  setEvents: (state: GlobalState, action: PayloadAction<EventStruct[]>) => {
+    state.events = action.payload
   },
-  setCharity: (state: GlobalState, action: PayloadAction<CharityStruct | null>) => {
-    state.charity = action.payload
+  setEvent: (state: GlobalState, action: PayloadAction<EventStruct | null>) => {
+    state.event = action.payload
   },
-  setSupports: (state: GlobalState, action: PayloadAction<SupportStruct[]>) => {
+  setUsers: (state: GlobalState, action: PayloadAction<SupportStruct[]>) => {
     state.supports = action.payload
   },
+
+
   setDeleteModal: (state: GlobalState, action: PayloadAction<string>) => {
     state.deleteModal = action.payload
   },
