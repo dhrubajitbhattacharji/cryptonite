@@ -8,25 +8,10 @@ import '@openzeppelin/contracts/access/AccessControl.sol';
 
 import "hardhat/console.sol";
 
-contract Cryptonite is AccessControl {
+contract Cryptonite {
   using Counters for Counters.Counter;
   Counters.Counter private _totalEvents;
   Counters.Counter private _totalUsers;
-
-  uint256 public citybeat;
-
-  mapping(uint256 => UserStruct) users;
-  mapping(string => uint256) public userEmailToId;
-  mapping(string => uint256) public userUserNameToId;
-  mapping(uint256 => bool) public userExist;
-  mapping(string => bool) public userUserNameExist;
-  mapping(string => bool) public userEmailExist;
-  
-  mapping(uint256 => EventStruct) events;
-  mapping(uint256 => bool) public eventExist;
-  mapping(address => EventStruct[]) interestedOf;
-  mapping(uint256 => UserStruct[]) supportersOf;
-
 
   struct UserStruct {
     uint256 id;
@@ -53,20 +38,38 @@ contract Cryptonite is AccessControl {
     bool isLive;
   }
 
-  constructor() {
-  }
+  uint256 public cryponite;
+
+  mapping(uint256 => UserStruct) users;
+  mapping(string => uint256) public userEmailToId;
+  mapping(string => uint256) public userUserNameToId;
+  mapping(uint256 => bool) public userExist;
+  mapping(string => bool) public userUserNameExist;
+  mapping(string => bool) public userEmailExist;
+  
+  mapping(uint256 => EventStruct) events;
+  mapping(uint256 => bool) public eventExist;
+  mapping(address => EventStruct[]) interestedOf;
+  mapping(uint256 => UserStruct[]) supportersOf;
+
+  EventStruct[] public allEvents;
+  UserStruct[] public allUsers;
+
+
+  
+
 
   function createUser(
     string memory userName,
     string memory email,
     string memory phone
-  ) public returns (bool, string memory) {
+  ) public returns (bool, string memory, uint256 id) {
     require(bytes(userName).length > 0, 'User Name cannot be empty');
     require(bytes(email).length > 0, 'Email cannot be empty');
     require(bytes(phone).length > 0, 'Phone cannot be empty');
 
     if(userEmailExist[email] == true || userUserNameExist[userName] == true) {
-      return (false, "Email already exists");
+      return (false, "Email already exists", 0);
     }
 
     _totalUsers.increment();
@@ -77,6 +80,8 @@ contract Cryptonite is AccessControl {
     user.email = email;
     user.phone = phone;
 
+    allUsers.push(user);
+
     users[user.id] = user;
     userEmailToId[user.email] = user.id;
     userUserNameToId[user.userName] = user.id;
@@ -84,7 +89,7 @@ contract Cryptonite is AccessControl {
     userEmailExist[user.email] = true;
     userUserNameExist[user.userName] = true;
 
-    return (true, "Accout created successfully");
+    return (true, "Accout created successfully", user.id);
   }
 
   function updateUser(
@@ -133,7 +138,6 @@ contract Cryptonite is AccessControl {
     require(bytes(description).length > 0, 'Description cannot be empty');
     require(bytes(image).length > 0, 'Image cannot be empty');
     require(bytes(location).length > 0, 'Location cannot be empty');
-    require(amount > 0 ether, 'Amount cannot be zero');
 
     _totalEvents.increment();
     EventStruct memory myEvent;
@@ -148,6 +152,8 @@ contract Cryptonite is AccessControl {
     myEvent.donations = 0;
     myEvent.deleted = false;
     myEvent.isLive = true;
+
+     allEvents.push(myEvent);
 
     events[myEvent.id] = myEvent;
     eventExist[myEvent.id] = true;
@@ -195,7 +201,7 @@ contract Cryptonite is AccessControl {
   function getEvents() public view returns (EventStruct[] memory Events) {
     uint256 available;
     for (uint i = 1; i <= _totalEvents.current(); i++) {
-      if (!events[i].deleted && !events[i].isLive) {
+      if (!events[i].deleted && events[i].isLive) {
         available++;
       }
     }
@@ -204,7 +210,7 @@ contract Cryptonite is AccessControl {
 
     uint256 index;
     for (uint i = 1; i <= _totalEvents.current(); i++) {
-      if (!events[i].deleted && !events[i].isLive) {
+      if (!events[i].deleted && events[i].isLive) {
         Events[index++] = events[i];
       }
     }
@@ -231,11 +237,16 @@ contract Cryptonite is AccessControl {
     }
   }
 
-
-
   function payTo(address to, uint256 amount) internal {
     (bool success, ) = payable(to).call{ value: amount }('');
     require(success);
   }
-}
 
+  function getAllEvents() public view returns (EventStruct[] memory) {
+    return allEvents;
+  }
+
+  function getAllUsers() public view returns (UserStruct[] memory) {
+    return allUsers;
+  }
+}
