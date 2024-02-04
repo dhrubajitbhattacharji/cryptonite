@@ -62,6 +62,7 @@ export interface SupportStruct {
 }
 
 export interface GlobalState {
+  token: string
   events: EventStruct[]
   event: EventStruct | null
   supports: SupportStruct[]
@@ -74,17 +75,7 @@ export interface GlobalState {
 
 export interface Tst {
   id: number
-  image: string
-  name: string
-  profile: string
-  description: string
-  location: string
-  donations: number
-  raised: number
-  amount: number
-  owner: string
-  deleted: boolean
-  banned: boolean
+
 }
 
 export interface RootState {

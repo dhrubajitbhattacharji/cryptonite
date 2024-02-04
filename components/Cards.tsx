@@ -7,16 +7,16 @@ import { MdChevronRight } from 'react-icons/md'
 
 const Cards: React.FC<{ charities: EventStruct[] }> = ({ charities }) => {
 
- const data = getEvents()
- console.log(data);
+//  const data = getEvents()
+//  console.log(data);
  
 
   
   return (
     <div className="my-10 lg:w-2/3 w-full mx-auto">
-      <p className="text-center">Where you can help</p>
-      <h4 className="text-2xl font-medium mb-6 mt-2 text-center">
-        {charities.length > 0 ? 'Featured Topics' : 'No Charities Yet'}
+      <p className="text-center text-xl">Here for You to Explore</p>
+      <h4 className="text-3xl text-purple-700 font-medium mb-6 mt-2 text-center">
+        {charities.length > 0 ? 'Featured Events' : 'No Events Yet'}
       </h4>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
         {charities.map((charity: EventStruct, i: number) => (
@@ -29,7 +29,7 @@ const Cards: React.FC<{ charities: EventStruct[] }> = ({ charities }) => {
 
 const Card: React.FC<{ charity: EventStruct }> = ({ charity }) => {
   return (
-    <div className="shadow flex flex-col w-80 bg-gray-50 rounded-lg overflow-hidden">
+    <div className="shadow flex flex-col w-80 bg-gray-50 rounded-lg overflow-hidden cursor-pointer hover:scale-110 transition duration-500">
       <img src={charity.image} alt={charity.name} />
       <div className="p-5 space-y-8">
         <div>
@@ -49,7 +49,7 @@ const Card: React.FC<{ charity: EventStruct }> = ({ charity }) => {
           transition-all duration-300 ease-in-out hover:pl-5"
           href={'/donations/' + charity.id}
         >
-          <span>Donate now</span>
+          <span>Explore</span>
           <MdChevronRight />
         </Link>
       </div>

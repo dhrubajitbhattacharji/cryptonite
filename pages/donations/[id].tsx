@@ -1,6 +1,6 @@
 import Delete from '@/components/Delete'
 import Details from '@/components/Details'
-import Supports from '@/components/Supports'
+// import Supports from '@/components/Supports'
 import NavBtn from '@/components/NavBtn'
 import Payment from '@/components/Payment'
 import { EventStruct, RootState, SupportStruct } from '@/utils/type.dt'

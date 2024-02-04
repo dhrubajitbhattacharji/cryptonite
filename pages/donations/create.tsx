@@ -1,20 +1,21 @@
 import NavBtn from '@/components/NavBtn'
-import { CharityParams } from '@/utils/type.dt'
+import { createEvent } from '@/services/blockchain'
+import { EventParams } from '@/utils/type.dt'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useAccount } from 'wagmi'
 
+
 const Page: NextPage = () => {
   const { address } = useAccount()
-  const [charity, setCharity] = useState<CharityParams>({
+  const [charity, setCharity] = useState<EventParams>({
     name: '',
-    fullname: '',
-    profile: '',
-    amount: '',
     description: '',
     image: '',
+    location: '',
+    amount: 1,
   })
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -30,10 +31,10 @@ const Page: NextPage = () => {
 
     if (
       !charity.name ||
-      !charity.fullname ||
-      !charity.profile ||
-      !charity.amount ||
-      !charity.description
+      !charity.description ||
+      !charity.image ||
+      !charity.location ||
+      !charity.amount
     )
       return
 
@@ -41,8 +42,8 @@ const Page: NextPage = () => {
 
     await toast.promise(
       new Promise<void>((resolve, reject) => {
-        console.log(charity)
-        resolve()
+        // console.log(charity)
+        createEvent(charity)
       }),
       {
         pending: 'Approve transaction...',
@@ -55,11 +56,10 @@ const Page: NextPage = () => {
   const resetForm = () => {
     setCharity({
       name: '',
-      fullname: '',
-      profile: '',
-      amount: '',
       description: '',
       image: '',
+      location: '',
+      amount: '',
     })
   }
 
@@ -91,22 +91,9 @@ const Page: NextPage = () => {
                   required
                   value={charity.name}
                   onChange={handleChange}
-                />
+        />
               </div>
-
-              <div className="flex justify-between items-center rounded-xl p-2 w-full border border-gray-300">
-                <input
-                  className="block w-full text-sm text-slate-500 bg-transparent
-                  border-0 focus:outline-none focus:ring-0"
-                  type="text"
-                  name="fullname"
-                  placeholder="Your Full Name"
-                  required
-                  value={charity.fullname}
-                  onChange={handleChange}
-                />
               </div>
-            </div>
 
             <div className="flex justify-between items-center rounded-xl p-2 w-full border border-gray-300">
               <input
@@ -138,19 +125,6 @@ const Page: NextPage = () => {
                   onChange={handleChange}
                 />
               </div>
-
-              <div className="flex justify-between items-center rounded-xl p-2 w-full border border-gray-300">
-                <input
-                  className="block w-full text-sm text-slate-500 bg-transparent
-                  border-0 focus:outline-none focus:ring-0"
-                  type="text"
-                  name="profile"
-                  placeholder="Your LinkedIn Profile"
-                  required
-                  value={charity.profile}
-                  onChange={handleChange}
-                />
-              </div>
             </div>
 
             <div className="flex justify-between items-center rounded-xl p-2 w-full border border-gray-300">
@@ -167,9 +141,9 @@ const Page: NextPage = () => {
 
             <div className="">
               <button
-                className="text-white text-md bg-green-600 py-3 px-8 rounded-full
-                drop-shadow-xl border border-transparent hover:bg-transparent hover:border-green-600
-                hover:text-green-600 focus:outline-none mt-5"
+                className="text-white text-md bg-purple-600 py-3 px-8 rounded-full
+                drop-shadow-xl border border-transparent hover:bg-transparent hover:border-purple-600
+                hover:text-purple-600 focus:outline-none mt-5"
               >
                 Create & List
               </button>
@@ -182,7 +156,7 @@ const Page: NextPage = () => {
       <div className="h-10"></div>
       <div className="h-10"></div>
 
-      <NavBtn />
+      {/* <NavBtn /> */}
     </div>
   )
 }

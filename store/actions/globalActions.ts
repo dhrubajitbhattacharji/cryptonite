@@ -12,6 +12,9 @@ export const globalActions = {
     state.supports = action.payload
   },
 
+  setToken: (state: GlobalState, action: PayloadAction<string>) => {
+    state.token = action.payload
+  },
 
   setDeleteModal: (state: GlobalState, action: PayloadAction<string>) => {
     state.deleteModal = action.payload

@@ -1,6 +1,7 @@
 import { GlobalState } from "@/utils/type.dt";
 
 export const globalStates: GlobalState = {
+    token: '',
     events: [],
     event: null,
     supports: [],
